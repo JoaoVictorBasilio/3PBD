@@ -1,0 +1,111 @@
+CREATE DATABASE Banco 
+default character set utf8 
+default collate utf8_general_ci;
+
+CREATE TABLE Contas(
+  num_conta int not null auto_increment,
+  tipo varchar(15) not null,
+  categ enum ('Especial','Comum'),
+  saldo decimal(9,2),
+  Primary key(num_conta))
+  default charset = utf8;
+
+CREATE TABLE Clientes(
+  cod_cli tinyint not null,
+  nome varchar(40) not null,
+  cpf int not null,
+  dt_nasc date not null,
+  nacional varchar(20) default 'Brasil',
+  sexo enum ('F','M'),
+  email varchar(20),
+  tel varchar(13),
+  cel varchar(14),
+  primary key (cod_cli))
+  default charset = utf8;
+
+CREATE TABLE Contas_X_Clientes(
+  id_cxc int not null auto_increment,
+  cod_cli tinyint,
+  num_conta int,
+  primary key (id_cxc),
+  foreign key (cod_cli) references Clientes(cod_cli),
+  foreign key (num_conta) references Contas(num_conta));
+  
+  INSERT INTO Clientes
+  (cod_cli, nome, cpf, dt_nasc,nacional,sexo,email,tel,cel)
+  VALUES
+  ('11','Ana Lee','123234101','1995-06-22','Brasileira','F','lee.ana@gmail.com','(21)3506-2009','(21)98526-0221');
+  
+  INSERT INTO Contas
+  (tipo,categ,saldo)
+  VALUES
+  ('Corrente','Especial','2598.55');
+  
+  INSERT INTO Contas
+  (tipo,categ,saldo)
+  VALUES
+  ('Poupança','Comum','1050.38');
+  
+  INSERT INTO Contas
+  (tipo,categ,saldo)
+VALUES
+('Corrente','Especial','2598.55'),
+('Poupança','Comum','1050.38'),
+('Poupança','Especial','2000.99'),
+('Corrente','Comum','680.59');
+
+SELECT * FROM Contas;
+
+SELECT *FROM Contas WHERE categ='Especial';
+
+SELECT * FROM Contas WHERE saldo > 1000 and saldo < 3000;
+
+SELECT * FROM Clientes WHERE sexo='F' or nacional<>'Brasileira';
+
+SELECT nome,tel,cel FROM Clientes WHERE sexo='M';
+
+SELECT num_conta, saldo FROM Contas WHERE tipo='Corrente' and categ = 'Especial';
+
+SELECT * FROM Clientes WHERE nome like 'A%';
+
+SELECT nome, tel FROM Clientes ORDER BY nome;
+
+SELECT nome,tel, cel FROM Clientes WHERE sexo = 'F' ORDER BY nome DESC;
+
+CREATE DATABASE Cadastro 
+default character set utf8 
+default collate utf8_general_ci;
+
+CREATE TABLE Pessoas(
+  id_pes not null auto_increment,
+  nome varchar(40) not null,
+  email varchar(20) not null,
+  primary key (id_pes));
+  default charset = utf8;
+  
+  CREATE TABLE Telefones(
+    id_tel INT not null auto_increment,
+    telefone varchar(13),
+    Pessoas_id INT,
+    primary key (id_tel),
+    foreign key (Pessoas_id) references Pessoas(id_pes));
+    
+    CREATE TABLE Projetos(
+      id_proj not null auto_increment,
+      nome varchar(20) not null,
+      descricao varchar(40),
+      data date,
+      primary key (id_proj));
+      
+      CREATE TABLE Projetos_X_Pessoas(
+        id_pxp int not null auto_increment,
+        Projetos_id int,
+        Pessoas_id int,
+        primary key (id_pxp),
+        foreign key (Projetos_id) references Projetos(id_proj),
+        foreign key (Pessoas_id) references Pessoas (id_pes));
+        
+        INSERT INTO Pessoas
+        (id_pes,nome,email)
+        VALUES
+        
